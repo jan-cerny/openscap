@@ -211,6 +211,7 @@ char *strbuf_cstr (strbuf_t *buf)
                 stroff += cur->size;
                 cur = cur->next;
         }
+	*stroff = '\0';
 
         return (strbeg);
 }
