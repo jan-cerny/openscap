@@ -215,6 +215,23 @@ static void _syschar_add_bindings(struct oval_syschar *sc, struct oval_string_ma
 	oval_collection_iterator_free(var_itr);
 }
 
+static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct oval_syschar *syschar, int flags)
+{
+    int ret;
+    SEXP_t *s_obj, *s_sys;
+
+    dI("oval_probe_int_eval");
+    dI("Evaluating OVAL subtype '%s'.", oval_subtype_get_text(type));
+
+    struct oval_object *object = oval_syschar_get_object(syschar);
+
+    ret = oval_object_to_sexp(pext->sess_ptr, oval_subtype_to_str(oval_object_get_subtype(object)), syschar, &s_obj);
+
+
+
+    return 0;
+}
+
 int oval_probe_query_object(oval_probe_session_t *psess, struct oval_object *object, int flags, struct oval_syschar **out_syschar)
 {
 	char *oid;
@@ -273,9 +290,7 @@ int oval_probe_query_object(oval_probe_session_t *psess, struct oval_object *obj
 		return 1;
         }
 
-	if ((ret = oval_probe_ext_handler(type, ph->uptr, PROBE_HANDLER_ACT_EVAL, sysc, flags)) != 0) {
-		return ret;
-	}
+    oval_probe_int_eval(type, ph->uptr, sysc, flags);
 
 	if (!(flags & OVAL_PDFLAG_NOREPLY)) {
 		vm = oval_string_map_new();

@@ -87,5 +87,6 @@ OSCAP_API int oval_probe_query_variable(oval_probe_session_t *sess, struct oval_
 OSCAP_API void oval_probe_meta_list(FILE *output, int flags);
 
 OSCAP_API const char *oval_probe_ext_getdir(void);
+
 #endif				/* OVAL_PROBE_H */
 /// @}
