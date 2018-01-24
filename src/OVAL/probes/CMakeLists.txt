@@ -10,11 +10,11 @@ endfunction()
 if(ENABLE_PROBES)
 	add_subdirectory("crapi")
 	add_subdirectory("probe")
+	add_oscap_probe(probe_system_info "independent/system_info.c")
 endif()
 
 if(ENABLE_SEPARATE_PROBES)
 	if(ENABLE_PROBES_INDEPENDENT)
-		add_oscap_probe(probe_system_info "independent/system_info.c")
 
 		add_oscap_probe(probe_family "independent/family.c")
 
