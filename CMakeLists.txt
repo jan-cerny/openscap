@@ -152,7 +152,8 @@ option(ENABLE_SCE "enables Script Check Engine - an alternative checking engine 
 
 # ---------- OVAL FEATURE SWITCHES
 
-option(ENABLE_PROBES "build OVAL probes as separate binaries - each probe implements an OVAL test" FALSE)
+option(ENABLE_PROBES "build OVAL probes - each probe implements an OVAL test" TRUE)
+option(ENABLE_SEPARATE_PROBES "build OVAL probes as separate binaries" FALSE)
 set(SEAP_MSGID_BITS 32 CACHE STRING "Size of SEAP_msgid_t in bits [32|64]")
 option(ENABLE_PROBES_INDEPENDENT "build OVAL probes for independent (cross platform) OVAL tests" TRUE)
 # TODO: We probably only want these on UNIX systems
