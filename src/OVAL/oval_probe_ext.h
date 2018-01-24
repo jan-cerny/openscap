@@ -72,8 +72,8 @@ int oval_probe_ext_eval(SEAP_CTX_t *ctx, oval_pd_t *pd, oval_pext_t *pext, struc
 int oval_probe_ext_reset(SEAP_CTX_t *ctx, oval_pd_t *pd, oval_pext_t *pext);
 int oval_probe_ext_abort(SEAP_CTX_t *ctx, oval_pd_t *pd, oval_pext_t *pext);
 
-int oval_probe_ext_handler(oval_subtype_t type, void *ptr, int act, ...);
-int oval_probe_sys_handler(oval_subtype_t type, void *ptr, int act, ...);
+int oval_probe_ext_handler(oval_subtype_t type, oval_pext_t *pext, int act, ...);
+int oval_probe_sys_handler(oval_subtype_t type, oval_pext_t *pext, int act, ...);
 
 extern const oval_pdsc_t OSCAP_GSYM(default_pdsc)[];
 

@@ -738,10 +738,9 @@ static int oval_probe_sys_eval(SEAP_CTX_t *ctx, oval_pd_t *pd, struct oval_sysch
 	return (-1);
 }
 
-int oval_probe_sys_handler(oval_subtype_t type, void *ptr, int act, ...)
+int oval_probe_sys_handler(oval_subtype_t type, oval_pext_t *pext, int act, ...)
 {
         int ret = 0;
-        oval_pext_t *pext = (oval_pext_t *)ptr;
         va_list ap;
         oval_pd_t *pd;
 
@@ -758,7 +757,7 @@ int oval_probe_sys_handler(oval_subtype_t type, void *ptr, int act, ...)
                 pd  = oval_pdtbl_get(pext->pdtbl, type);
 
                 if (pd == NULL) {
-                        if (oval_probe_sys_handler(type, ptr, PROBE_HANDLER_ACT_OPEN) != 0) {
+                        if (oval_probe_sys_handler(type, pext, PROBE_HANDLER_ACT_OPEN) != 0) {
 				va_end(ap);
                                 return(-1);
 			}
@@ -817,11 +816,10 @@ int oval_probe_sys_handler(oval_subtype_t type, void *ptr, int act, ...)
         return(ret);
 }
 
-int oval_probe_ext_handler(oval_subtype_t type, void *ptr, int act, ...)
+int oval_probe_ext_handler(oval_subtype_t type, oval_pext_t *pext, int act, ...)
 {
         int          ret = 0;
         va_list      ap;
-        oval_pext_t *pext = (oval_pext_t *)ptr;
         oval_pd_t   *pd;
 
         va_start(ap, act);
