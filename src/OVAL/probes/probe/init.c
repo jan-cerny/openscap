@@ -35,7 +35,3 @@
 /**
  * Dummy probe_fini function.
  */
-void *probe_init(void)
-{
-	return (NULL);
-}

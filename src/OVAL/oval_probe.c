@@ -51,6 +51,7 @@
 #include "collectVarRefs_impl.h"
 #include "probe_common.h"
 #include "oval_sexp.h"
+#include "_seap-message.h"
 
 oval_probe_meta_t OSCAP_GSYM(__probe_meta)[] = {
         { OVAL_SUBTYPE_SYSINFO, "system_info", &oval_probe_sys_handler, OVAL_PROBEMETA_EXTERNAL, "probe_system_info" },
@@ -221,7 +222,8 @@ static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct ov
 {
     int ret;
     SEXP_t *s_obj, *s_sys;
-    SEAP_msg_t *s_imsg, *s_omsg;
+    SEAP_msg_t *s_imsg;
+    SEAP_msg_t *s_omsg;
 
     dI("oval_probe_int_eval");
     dI("Evaluating OVAL subtype '%s'.", oval_subtype_get_text(type));
@@ -232,9 +234,13 @@ static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct ov
     s_imsg = SEAP_msg_new();
     SEAP_msg_set(s_imsg, s_obj);
 
-	probe_common(type, s_imsg);
+	probe_common(type, s_imsg, &s_omsg);
 
-    return 0;
+    s_sys = SEAP_msg_get(s_omsg);
+    ret = oval_sexp_to_sysch(s_sys, syschar);
+    // SEXP_free(s_sys);
+
+    return (ret);
 }
 
 int oval_probe_query_object(oval_probe_session_t *psess, struct oval_object *object, int flags, struct oval_syschar **out_syschar)

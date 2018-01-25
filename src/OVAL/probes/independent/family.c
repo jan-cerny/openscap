@@ -61,7 +61,7 @@ void *probe_init(void)
 	return NULL;
 }
 
-int probe_main(probe_ctx *ctx, void *arg)
+int family_probe_main(probe_ctx *ctx, void *arg)
 {
 	SEXP_t *item;
 

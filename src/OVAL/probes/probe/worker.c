@@ -893,9 +893,11 @@ static SEXP_t *probe_set_eval(probe_t *probe, SEXP_t *set, size_t depth)
  */
 SEXP_t *probe_worker(probe_t *probe, SEAP_msg_t *msg_in, int *ret)
 {
+    dI("probe_worker");
 	SEXP_t *probe_in, *probe_out, *set;
 
 	if (msg_in == NULL) {
+        dI("msg_in == NULL");
 		*ret = PROBE_EINVAL;
 		return (NULL);
 	}
@@ -904,6 +906,7 @@ SEXP_t *probe_worker(probe_t *probe, SEAP_msg_t *msg_in, int *ret)
 	probe_out = NULL;
 
 	if (probe_in == NULL) {
+        dI("probe_in == NULL");
 		*ret = PROBE_ENOOBJ;
 		return (NULL);
 	}
@@ -911,6 +914,7 @@ SEXP_t *probe_worker(probe_t *probe, SEAP_msg_t *msg_in, int *ret)
 	set = probe_obj_getent(probe_in, "set", 1);
 
 	if (set != NULL) {
+        dI("set != NULL");
 		/* set object */
 		probe_out = probe_set_eval(probe, set, 0);
 		SEXP_free(set);
@@ -947,7 +951,9 @@ SEXP_t *probe_worker(probe_t *probe, SEAP_msg_t *msg_in, int *ret)
                          */
 			int __unused_oldstate;
 			pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &__unused_oldstate);
-			*ret = probe_main(&pctx, probe->probe_arg);
+            dI("probe_main");
+			*ret = family_probe_main(&pctx, probe->probe_arg);
+            dI("probe_main returned");
 			pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &__unused_oldstate);
 
                         /*
@@ -985,6 +991,7 @@ SEXP_t *probe_worker(probe_t *probe, SEAP_msg_t *msg_in, int *ret)
                                 /*
                                  * Run the main function of the probe implementation
                                  */
+                dI("I will call probe_main");
 				*ret = probe_main(&pctx, probe->probe_arg);
 
                                 /*

@@ -65,6 +65,7 @@ if (ENABLE_PROBES)
 	list(APPEND OBJECTS_TO_LINK_AGAINST
 		$<TARGET_OBJECTS:probe_object>
 		$<TARGET_OBJECTS:seap_object>
+		$<TARGET_OBJECTS:family_probe_object>
 	)
 endif()
 
