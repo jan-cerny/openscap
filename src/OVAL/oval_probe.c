@@ -50,6 +50,7 @@
 #include "oval_probe_ext.h"
 #include "collectVarRefs_impl.h"
 #include "probe_common.h"
+#include "oval_sexp.h"
 
 oval_probe_meta_t OSCAP_GSYM(__probe_meta)[] = {
         { OVAL_SUBTYPE_SYSINFO, "system_info", &oval_probe_sys_handler, OVAL_PROBEMETA_EXTERNAL, "probe_system_info" },
