@@ -53,6 +53,8 @@ void *probe_input_handler(void *arg)
         SEAP_msg_t *seap_request, *seap_reply;
         SEXP_t *probe_in, *probe_out, *oid;
 
+    seap_request = probe->input;
+
 #if defined(HAVE_PTHREAD_SETNAME_NP)
 # if defined(__APPLE__)
 	pthread_setname_np("input_handler");
@@ -91,17 +93,6 @@ void *probe_input_handler(void *arg)
 
 	while(1) {
                 TH_CANCEL_ON;
-
-		if (SEAP_recvmsg(probe->SEAP_ctx, probe->sd, &seap_request) == -1) {
-			dE("An error ocured while receiving SEAP message. errno=%u, %s.", errno, strerror(errno));
-
-                        /*
-                         * TODO: check for abort request
-                         */
-			break;
-		}
-
-                TH_CANCEL_OFF;
 
 		probe_in = SEAP_msg_get(seap_request);
 

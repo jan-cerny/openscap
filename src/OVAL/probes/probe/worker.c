@@ -36,6 +36,7 @@
 #include "entcmp.h"
 
 #include "worker.h"
+#include "probe.h"
 
 extern bool  OSCAP_GSYM(varref_handling);
 extern void *OSCAP_GSYM(probe_arg);

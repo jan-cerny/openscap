@@ -23,6 +23,6 @@
 #define OPENSCAP_PROBE_COMMON_H
 
 /* Function common to all probes */
-int probe_common(oval_subtype_t type);
+int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input);
 
 #endif //OPENSCAP_PROBE_COMMON_H

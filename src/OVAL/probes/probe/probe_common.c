@@ -179,7 +179,7 @@ static void preload_libraries_before_chroot()
 	pthread_join(t, NULL);
 }
 
-int probe_common(oval_subtype_t type)
+int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input)
 {
 	pthread_attr_t th_attr;
 	sigset_t       sigmask;
@@ -225,6 +225,7 @@ int probe_common(oval_subtype_t type)
 	probe.pid   = getpid();
 	probe.name = probe_name;
         probe.probe_exitcode = 0;
+    probe.input = probe_input;
 
 	/*
 	 * Initialize SEAP stuff
@@ -326,6 +327,7 @@ int probe_common(oval_subtype_t type)
 
 	pthread_attr_init(&th_attr);
 
+    dI("Creating input handler thread");
 	if (pthread_create(&probe.th_input, &th_attr, &probe_input_handler, &probe))
 		fail(errno, "pthread_create(probe_input_handler)", __LINE__ - 1);
 

@@ -221,6 +221,7 @@ static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct ov
 {
     int ret;
     SEXP_t *s_obj, *s_sys;
+    SEAP_msg_t *s_imsg, *s_omsg;
 
     dI("oval_probe_int_eval");
     dI("Evaluating OVAL subtype '%s'.", oval_subtype_get_text(type));
@@ -228,8 +229,10 @@ static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct ov
     struct oval_object *object = oval_syschar_get_object(syschar);
 
     ret = oval_object_to_sexp(pext->sess_ptr, oval_subtype_to_str(oval_object_get_subtype(object)), syschar, &s_obj);
+    s_imsg = SEAP_msg_new();
+    SEAP_msg_set(s_imsg, s_obj);
 
-	probe_common(type);
+	probe_common(type, s_imsg);
 
     return 0;
 }
