@@ -75,7 +75,8 @@ void *probe_input_handler(void *arg)
         }
 
         pthread_cleanup_push((void(*)(void *))pthread_attr_destroy, (void *)&pth_attr);
-        
+
+                dI("Input handler thread Waiting on barrier");
         switch (errno = pthread_barrier_wait(&OSCAP_GSYM(th_barrier)))
         {
         case 0:
@@ -86,6 +87,7 @@ void *probe_input_handler(void *arg)
 	           errno, strerror(errno));
 	        return (NULL);
         }
+                dI("Input handler thread Barrier reached");
 
 	while(1) {
                 TH_CANCEL_ON;
@@ -103,8 +105,12 @@ void *probe_input_handler(void *arg)
 
 		probe_in = SEAP_msg_get(seap_request);
 
-		if (probe_in == NULL)
-			abort();
+		if (probe_in == NULL) {
+            dI("probe_in == NULL");
+            abort();
+        } else {
+            dI("probe_in != NULL");
+        }
 
 		SEXP_VALIDATE(probe_in);
 
