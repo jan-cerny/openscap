@@ -189,15 +189,8 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input)
 	const char *probe_name = oval_subtype_get_text(type);
 
     dI("probe_common %s", probe_name);
-    return 0;
-
-	/* Turn on verbose mode */
-	char *verbosity_level = getenv("OSCAP_PROBE_VERBOSITY_LEVEL");
-	char *verbose_log_file = getenv("OSCAP_PROBE_VERBOSE_LOG_FILE");
-	oscap_set_verbose(verbosity_level, verbose_log_file, true);
 
 	if ((errno = pthread_barrier_init(&OSCAP_GSYM(th_barrier), NULL,
-	                                  1 + // signal thread
 	                                  1 + // input thread
 	                                  1 + // icache thread
 	                                  0)) != 0)
@@ -266,19 +259,6 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input)
 	OSCAP_GSYM(probe_optdef) = probe.option;
 	OSCAP_GSYM(probe_optdef_count) = probe.optcnt;
 
-	/*
-	 * Create signal handler
-	 */
-	pthread_attr_init(&th_attr);
-
-	if (pthread_attr_setdetachstate(&th_attr, PTHREAD_CREATE_JOINABLE))
-		fail(errno, "pthread_attr_setdetachstate", __LINE__ - 1);
-
-	if (pthread_create(&probe.th_signal, &th_attr, &probe_signal_handler, &probe))
-		fail(errno, "pthread_create(probe_signal_handler)", __LINE__ - 1);
-
-	pthread_attr_destroy(&th_attr);
-
 	probe_offline_mode();
 
 	/*
@@ -333,11 +313,6 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input)
 
 	pthread_attr_destroy(&th_attr);
 
-	/*
-	 * Wait until the signal handler exits
-	 */
-	if (pthread_join(probe.th_signal, NULL))
-		fail(errno, "pthread_join", __LINE__ - 1);
 
 	/*
 	 * Wait for the input_handler thread
