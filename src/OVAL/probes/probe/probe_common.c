@@ -220,6 +220,11 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input)
         probe.probe_exitcode = 0;
     probe.input = probe_input;
 
+    if (probe.input == NULL) {
+        dE("No probe input");
+        return 1;
+    }
+
 	/*
 	 * Initialize SEAP stuff
 	 */
@@ -333,6 +338,7 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input)
 	if (pthread_join(probe.th_input, NULL))
 		fail(errno, "pthread_join", __LINE__ - 1);
 #endif
+    dI("cleanup");
 	/*
 	 * Cleanup
 	 */
@@ -349,7 +355,7 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input)
 
 	SEAP_CTX_free(probe.SEAP_ctx);
         free(probe.option);
-	free(probe.name);
+
 	return (probe.probe_exitcode);
 }
 

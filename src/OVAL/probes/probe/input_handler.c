@@ -55,6 +55,11 @@ void *probe_input_handler(void *arg)
 
     seap_request = probe->input;
 
+    if(seap_request == NULL) {
+        dE("seap_request == NULL");
+        return NULL;
+    }
+
 #if defined(HAVE_PTHREAD_SETNAME_NP)
 # if defined(__APPLE__)
 	pthread_setname_np("input_handler");
@@ -185,29 +190,30 @@ void *probe_input_handler(void *arg)
 						} else {
 							/* OK */
 
-							if (pthread_create(&pair->pth->tid, &pth_attr, &probe_worker_runfn, pair))
-							{
-								dE("Cannot start a new worker thread: %d, %s.", errno, strerror(errno));
+							if (pthread_create(&pair->pth->tid, &pth_attr, &probe_worker_runfn, pair)) {
+                                dE("Cannot start a new worker thread: %d, %s.", errno, strerror(errno));
 
-								if (rbt_i32_del(probe->workers, pair->pth->sid, NULL) != 0)
-									dE("rbt_i32_del: failed to remove worker thread (ID=%u)", pair->pth->sid);
+                                if (rbt_i32_del(probe->workers, pair->pth->sid, NULL) != 0)
+                                    dE("rbt_i32_del: failed to remove worker thread (ID=%u)", pair->pth->sid);
 
-								SEAP_msg_free(pair->pth->msg);
-								free(pair->pth);
-								free(pair);
+                                SEAP_msg_free(pair->pth->msg);
+                                free(pair->pth);
+                                free(pair);
 
-								probe_ret = PROBE_EUNKNOWN;
-								probe_out = NULL;
+                                probe_ret = PROBE_EUNKNOWN;
+                                probe_out = NULL;
 
-								goto __error_reply;
-							}
+                                goto __error_reply;
+                            }
+                            pthread_join(pair->pth->tid, NULL);
 						}
 
 						seap_request = NULL;
-						continue;
+                        break;
 					}
 				} else {
 					/* cache hit */
+                    dI("cache hit");
 					SEXP_free(oid);
 					SEXP_free(probe_in);
 					probe_ret = 0;
@@ -235,6 +241,7 @@ void *probe_input_handler(void *arg)
 		} else {
 			SEXP_VALIDATE(probe_out);
 
+            dI("Creating SEAP reply");
 			seap_reply = SEAP_msg_new();
 			SEAP_msg_set(seap_reply, probe_out);
                         SEXP_free(probe_out);
@@ -257,5 +264,6 @@ void *probe_input_handler(void *arg)
 	} /* main loop */
 
         pthread_cleanup_pop(1);
+    dI("input handler return");
         return (NULL);
 }

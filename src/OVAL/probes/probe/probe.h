@@ -65,6 +65,7 @@ typedef struct {
 	size_t          optcnt; /**< number of defined options */
 
 	SEAP_msg_t *input; /**< Input SEAP message to process by probe **/
+    SEAP_msg_t *output; /**< Output SEAP message returned by probe **/
 } probe_t;
 
 struct probe_ctx {

@@ -115,23 +115,15 @@ void *probe_worker_runfn(void *arg)
 		SEXP_free(probe_res);
 	} else {
 		SEAP_msg_t *seap_reply;
-		/*
-		 * OK, the probe actually returned something, let's send it to the library.
-		 */
+
+		 dI("OK, the probe actually returned something, let's send it to the library.");
+
 		seap_reply = SEAP_msg_new();
 		SEAP_msg_set(seap_reply, probe_res);
+        probe_t *probe = pair->probe;
+        probe->output = seap_reply;
 
-		if (SEAP_reply(pair->probe->SEAP_ctx, pair->probe->sd, seap_reply, pair->pth->msg) == -1) {
-			int ret = errno;
 
-			SEAP_msg_free(seap_reply);
-			SEXP_free(probe_res);
-
-			exit(ret);
-		}
-
-		SEAP_msg_free(seap_reply);
-                SEXP_free(probe_res);
 	}
 
         SEAP_msg_free(pair->pth->msg);
@@ -139,6 +131,7 @@ void *probe_worker_runfn(void *arg)
 	free(pair);
 	pthread_detach(pthread_self());
 
+    dI("return from probe_worker_runfn");
 	return (NULL);
 }
 
