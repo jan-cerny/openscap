@@ -73,7 +73,7 @@ static void ncache_libinit(void)
 {
         if (OSCAP_GSYM(ncache) == NULL) {
                 OSCAP_GSYM(ncache) = probe_ncache_new();
-                atexit(ncache_libfree);
+               // atexit(ncache_libfree);
         }
 }
 
