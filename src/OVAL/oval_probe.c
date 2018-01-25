@@ -49,6 +49,7 @@
 #include "oval_probe_meta.h"
 #include "oval_probe_ext.h"
 #include "collectVarRefs_impl.h"
+#include "probe_common.h"
 
 oval_probe_meta_t OSCAP_GSYM(__probe_meta)[] = {
         { OVAL_SUBTYPE_SYSINFO, "system_info", &oval_probe_sys_handler, OVAL_PROBEMETA_EXTERNAL, "probe_system_info" },
@@ -227,7 +228,7 @@ static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct ov
 
     ret = oval_object_to_sexp(pext->sess_ptr, oval_subtype_to_str(oval_object_get_subtype(object)), syschar, &s_obj);
 
-
+	probe_common(type);
 
     return 0;
 }

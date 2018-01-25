@@ -83,6 +83,7 @@ endif()
 include_directories(
     "probes"
     "probes/public"
+    "probes/probe"
 )
 
 add_library(oval_object OBJECT ${OVAL_SOURCES})

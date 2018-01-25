@@ -1,9 +1,9 @@
 add_subdirectory("SEAP")
 
 function(add_oscap_probe PROBE_NAME PROBE_SOURCE_FILE)
-	add_executable(${PROBE_NAME} ${PROBE_SOURCE_FILE} ${ARGN})
+	add_executable(${PROBE_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/probe/main.c" ${PROBE_SOURCE_FILE} ${ARGN})
 	target_include_directories(${PROBE_NAME} PRIVATE "." "public")
-	target_link_libraries(${PROBE_NAME} openscap ${PCRE_LIBRARIES})
+	target_link_libraries(${PROBE_NAME} openscap ${PCRE_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 	install(TARGETS ${PROBE_NAME} DESTINATION ${OVAL_PROBE_DIR})
 endfunction()
 
