@@ -952,6 +952,9 @@ SEXP_t *probe_worker(probe_t *probe, SEAP_msg_t *msg_in, int *ret)
 			int __unused_oldstate;
 			pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &__unused_oldstate);
             dI("probe_main");
+
+            /* TODO: switch between probes based on probe type */
+
 			*ret = family_probe_main(&pctx, probe->probe_arg);
             dI("probe_main returned");
 			pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &__unused_oldstate);
