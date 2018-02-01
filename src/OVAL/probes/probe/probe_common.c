@@ -216,6 +216,7 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input, SEAP_msg_t **prob
 
 	probe.flags = 0;
 	probe.pid   = getpid();
+    probe.type = type;
 	probe.name = probe_name;
         probe.probe_exitcode = 0;
     probe.input = probe_input;

@@ -37,6 +37,7 @@
 
 #include "worker.h"
 #include "probe.h"
+#include "probe_table.h"
 
 extern bool  OSCAP_GSYM(varref_handling);
 extern void *OSCAP_GSYM(probe_arg);
@@ -953,9 +954,13 @@ SEXP_t *probe_worker(probe_t *probe, SEAP_msg_t *msg_in, int *ret)
 			pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &__unused_oldstate);
             dI("probe_main");
 
-            /* TODO: switch between probes based on probe type */
+            probe_function_t probe_function = probe_table_get(probe->type);
+            if (probe_function == NULL) {
+                dE("Could not find probe function for %s", probe->name);
+                return NULL;
+            }
+			*ret = probe_function(&pctx, probe->probe_arg);
 
-			*ret = family_probe_main(&pctx, probe->probe_arg);
             dI("probe_main returned");
 			pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &__unused_oldstate);
 

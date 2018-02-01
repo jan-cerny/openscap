@@ -53,6 +53,8 @@
 #include <probe-api.h>
 #include <probe/probe.h>
 #include <probe/option.h>
+#include "probe_table.h"
+#include "debug_priv.h"
 
 void *probe_init(void)
 {
@@ -63,6 +65,7 @@ void *probe_init(void)
 
 int family_probe_main(probe_ctx *ctx, void *arg)
 {
+    dI("family_probe_main");
 	SEXP_t *item;
 
         (void)arg;

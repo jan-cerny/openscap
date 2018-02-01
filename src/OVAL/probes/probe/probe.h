@@ -36,12 +36,14 @@
 #include "option.h"
 #include "common/util.h"
 #include "common/compat_pthread_barrier.h"
+#include "oval_types.h"
 
 typedef struct {
 	pthread_rwlock_t rwlock;
 	uint32_t         flags;
 
 	char       *name;
+	oval_subtype_t type;
 	pid_t       pid;
 
         void       *probe_arg;

@@ -157,5 +157,6 @@ if(ENABLE_SEPARATE_PROBES)
 else()
 	add_library(family_probe_object OBJECT "independent/family.c")
 	set_oscap_generic_properties(family_probe_object)
-	target_include_directories(family_probe_object PRIVATE "." "public")
+	target_include_directories(family_probe_object PRIVATE "." "public" "probe")
 endif()
+
