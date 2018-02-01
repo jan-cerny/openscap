@@ -37,6 +37,7 @@
 #include "common/util.h"
 #include "common/compat_pthread_barrier.h"
 #include "oval_types.h"
+#include "probe_table.h"
 
 typedef struct {
 	pthread_rwlock_t rwlock;
@@ -68,6 +69,8 @@ typedef struct {
 
 	SEAP_msg_t *input; /**< Input SEAP message to process by probe **/
     SEAP_msg_t *output; /**< Output SEAP message returned by probe **/
+
+	probe_function_t function;
 } probe_t;
 
 struct probe_ctx {

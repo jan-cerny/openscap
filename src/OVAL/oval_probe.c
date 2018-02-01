@@ -52,6 +52,7 @@
 #include "probe_common.h"
 #include "oval_sexp.h"
 #include "_seap-message.h"
+#include "probe_table.h"
 
 oval_probe_meta_t OSCAP_GSYM(__probe_meta)[] = {
         { OVAL_SUBTYPE_SYSINFO, "system_info", &oval_probe_sys_handler, OVAL_PROBEMETA_EXTERNAL, "probe_system_info" },
@@ -218,7 +219,7 @@ static void _syschar_add_bindings(struct oval_syschar *sc, struct oval_string_ma
 	oval_collection_iterator_free(var_itr);
 }
 
-static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct oval_syschar *syschar, int flags)
+static int oval_probe_int_eval(probe_function_t probe_function,  oval_subtype_t type, oval_probe_session_t *sess, struct oval_syschar *syschar, int flags)
 {
     int ret;
     SEXP_t *s_obj, *s_sys;
@@ -230,11 +231,11 @@ static int oval_probe_int_eval(oval_subtype_t type, oval_pext_t *pext, struct ov
 
     struct oval_object *object = oval_syschar_get_object(syschar);
 
-    ret = oval_object_to_sexp(pext->sess_ptr, oval_subtype_to_str(oval_object_get_subtype(object)), syschar, &s_obj);
+    ret = oval_object_to_sexp(sess, oval_subtype_to_str(oval_object_get_subtype(object)), syschar, &s_obj);
     s_imsg = SEAP_msg_new();
     SEAP_msg_set(s_imsg, s_obj);
 
-	probe_common(type, s_imsg, &s_omsg);
+	probe_common(probe_function, type, s_imsg, &s_omsg);
 
     s_sys = SEAP_msg_get(s_omsg);
     ret = oval_sexp_to_sysch(s_sys, syschar);
@@ -291,7 +292,8 @@ int oval_probe_query_object(oval_probe_session_t *psess, struct oval_object *obj
 
 	ph = oval_probe_handler_get(psess->ph, type);
 
-        if (ph == NULL) {
+        probe_function_t probe_function = probe_table_get(type);
+        if (probe_function == NULL) {
                 char *msg = "OVAL object not supported.";
 
 		dW("%s", msg);
@@ -301,7 +303,7 @@ int oval_probe_query_object(oval_probe_session_t *psess, struct oval_object *obj
 		return 1;
         }
 
-    oval_probe_int_eval(type, ph->uptr, sysc, flags);
+    oval_probe_int_eval(probe_function, type, psess, sysc, flags);
 
 	if (!(flags & OVAL_PDFLAG_NOREPLY)) {
 		vm = oval_string_map_new();

@@ -22,7 +22,9 @@
 #ifndef OPENSCAP_PROBE_COMMON_H
 #define OPENSCAP_PROBE_COMMON_H
 
+#include "probe_table.h"
+
 /* Function common to all probes */
-int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input, SEAP_msg_t **probe_output);
+int probe_common(probe_function_t probe_function, oval_subtype_t type, SEAP_msg_t *probe_input, SEAP_msg_t **probe_output);
 
 #endif //OPENSCAP_PROBE_COMMON_H

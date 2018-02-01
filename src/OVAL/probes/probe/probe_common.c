@@ -179,7 +179,7 @@ static void preload_libraries_before_chroot()
 	pthread_join(t, NULL);
 }
 
-int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input, SEAP_msg_t **probe_output)
+int probe_common(probe_function_t probe_function, oval_subtype_t type, SEAP_msg_t *probe_input, SEAP_msg_t **probe_output)
 {
 	pthread_attr_t th_attr;
 	sigset_t       sigmask;
@@ -220,6 +220,7 @@ int probe_common(oval_subtype_t type, SEAP_msg_t *probe_input, SEAP_msg_t **prob
 	probe.name = probe_name;
         probe.probe_exitcode = 0;
     probe.input = probe_input;
+	probe.function = probe_function;
 
     if (probe.input == NULL) {
         dE("No probe input");
