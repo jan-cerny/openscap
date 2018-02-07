@@ -383,7 +383,7 @@ SEXP_t *probe_obj_new(const char *name, SEXP_t * attrs)
 	SEXP_t *obj, *ns;
 
 	obj = SEXP_list_new(NULL);
-	ns  = probe_ncache_ref (OSCAP_GSYM(ncache), name);
+	ns  = probe_ncache_ref (NULL, name);
 
 	if (attrs != NULL) {
 		SEXP_t *nl, *nj;

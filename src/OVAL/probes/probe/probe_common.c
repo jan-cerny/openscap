@@ -243,7 +243,7 @@ int probe_common(probe_function_t probe_function, oval_subtype_t type, SEAP_msg_
 	 * Initialize result & name caching
 	 */
 	probe.rcache = probe_rcache_new();
-	probe.ncache = probe_ncache_new();
+	//probe.ncache = probe_ncache_new();
         probe.icache = probe_icache_new();
 
         OSCAP_GSYM(ncache) = probe.ncache;
@@ -310,7 +310,7 @@ int probe_common(probe_function_t probe_function, oval_subtype_t type, SEAP_msg_
 	 * Create input handler (detached)
 	 */
         probe.workers   = rbt_i32_new();
-        probe.probe_arg = probe_init();
+        //probe.probe_arg = probe_init();
 
 	pthread_attr_init(&th_attr);
 
@@ -346,7 +346,7 @@ int probe_common(probe_function_t probe_function, oval_subtype_t type, SEAP_msg_
 	 */
         probe_fini(probe.probe_arg);
 
-	probe_ncache_free(probe.ncache);
+	//probe_ncache_free(probe.ncache);
 	probe_rcache_free(probe.rcache);
         probe_icache_free(probe.icache);
 

@@ -27,6 +27,7 @@
 
 #include "probe_table.h"
 #include "oval_definitions.h"
+#include "oval_definitions_impl.h"
 
 typedef struct probe_table_entry {
     oval_subtype_t type;
@@ -35,6 +36,7 @@ typedef struct probe_table_entry {
 
 static const probe_table_entry_t probe_table[] = {
     {OVAL_INDEPENDENT_FAMILY, family_probe_main},
+    {OVAL_INDEPENDENT_SYSCHAR_SUBTYPE, system_info_probe_main},
     {OVAL_SUBTYPE_UNKNOWN, NULL}
 };
 

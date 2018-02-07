@@ -66,6 +66,7 @@ if (ENABLE_PROBES)
 		$<TARGET_OBJECTS:probe_object>
 		$<TARGET_OBJECTS:seap_object>
 		$<TARGET_OBJECTS:family_probe_object>
+		$<TARGET_OBJECTS:system_info_probe_object>
 	)
 endif()
 

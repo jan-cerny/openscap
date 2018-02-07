@@ -10,7 +10,6 @@ endfunction()
 if(ENABLE_PROBES)
 	add_subdirectory("crapi")
 	add_subdirectory("probe")
-	add_oscap_probe(probe_system_info "independent/system_info.c")
 endif()
 
 if(ENABLE_SEPARATE_PROBES)
@@ -158,5 +157,9 @@ else()
 	add_library(family_probe_object OBJECT "independent/family.c")
 	set_oscap_generic_properties(family_probe_object)
 	target_include_directories(family_probe_object PRIVATE "." "public" "probe")
+
+	add_library(system_info_probe_object OBJECT "independent/system_info.c")
+	set_oscap_generic_properties(system_info_probe_object)
+	target_include_directories(system_info_probe_object PRIVATE "." "public" "probe")
 endif()
 

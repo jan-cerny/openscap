@@ -100,6 +100,8 @@
 #include <sys/types.h>
 
 #include <pcre.h>
+#include <common/debug_priv.h>
+
 #define _REGEX_RES_VECSIZE     3
 #define _REGEX_MENUENTRY       "(?<=menuentry ').*?(?=')"
 #define _REGEX_SAVED_ENTRY_NR  "(?<=saved_entry=)[0-9]+"
@@ -519,13 +521,13 @@ fail:
 	return ret;
 }
 
-void *probe_init(void)
+void *system_info_probe_init(void)
 {
 	probe_setoption(PROBEOPT_OFFLINE_MODE_SUPPORTED, PROBE_OFFLINE_ALL);
 	return NULL;
 }
 
-int probe_main(probe_ctx *ctx, void *arg)
+int system_info_probe_main(probe_ctx *ctx, void *arg)
 {
 	SEXP_t* item = NULL;
 	char* os_name, *architecture, *hname;
@@ -535,6 +537,10 @@ int probe_main(probe_ctx *ctx, void *arg)
 	probe_offline_flags offline_mode = PROBE_OFFLINE_NONE;
 	int ret = 0;
 	(void)arg;
+
+    system_info_probe_init();
+
+    dI("System_info_probe");
 
 	os_name = architecture = hname = NULL;
 	probe_getoption(PROBEOPT_OFFLINE_MODE_SUPPORTED, NULL, &offline_mode);
@@ -595,5 +601,6 @@ cleanup:
 	}
 	probe_item_collect(ctx, item);
 
+    dI("System info probe end");
 	return ret;
 }

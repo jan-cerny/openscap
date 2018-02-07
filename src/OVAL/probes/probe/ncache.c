@@ -179,17 +179,5 @@ SEXP_t *probe_ncache_get (probe_ncache_t *cache, const char *name)
 
 SEXP_t *probe_ncache_ref (probe_ncache_t *cache, const char *name)
 {
-        SEXP_t *ref;
-
-        assume_d (name  != NULL, NULL);
-
-        if (cache == NULL)
-                return SEXP_string_new (name, strlen (name));
-
-        ref = probe_ncache_get (cache, name);
-
-        if (ref == NULL)
-                ref = probe_ncache_add (cache, name);
-
-        return (ref);
+        return SEXP_string_new (name, strlen (name));
 }

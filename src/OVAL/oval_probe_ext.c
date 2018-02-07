@@ -43,6 +43,8 @@
 #include "oval_probe_ext.h"
 #include "oval_sexp.h"
 #include "oval_probe_meta.h"
+#include "probe_common.h"
+#include "probe_table.h"
 
 #define __ERRBUF_SIZE 128
 
@@ -618,6 +620,9 @@ static int oval_probe_sys_eval(SEAP_CTX_t *ctx, oval_pd_t *pd, struct oval_sysch
 	struct oval_sysint *ife;
 	SEXP_t *s_obj, *s_sinf, *ent, *r0, *r1;
 	int ret;
+    SEAP_msg_t *s_imsg;
+    SEAP_msg_t *s_omsg;
+    probe_function_t probe_function;
 
 	/*
 	 * Prepare a dummy object. We can't simply send an empty object
@@ -637,11 +642,14 @@ static int oval_probe_sys_eval(SEAP_CTX_t *ctx, oval_pd_t *pd, struct oval_sysch
                 SEXP_free (r0);
         }
 
-        ret = oval_probe_comm(ctx, pd, s_obj, 0, &r0);
-        SEXP_free(s_obj);
+        //ret = oval_probe_comm(ctx, pd, s_obj, 0, &r0);
 
-	if (ret != 0)
-		return (ret);
+    s_imsg = SEAP_msg_new();
+    SEAP_msg_set(s_imsg, s_obj);
+    probe_function = probe_table_get(OVAL_INDEPENDENT_SYSCHAR_SUBTYPE);
+	probe_common(probe_function, OVAL_INDEPENDENT_SYSCHAR_SUBTYPE, s_imsg, &s_omsg);
+    r0 = SEAP_msg_get(s_omsg);
+    SEXP_free(s_obj);
 
 	r1 = probe_cobj_get_items(r0);
 	s_sinf = SEXP_list_first(r1);
@@ -765,12 +773,12 @@ int oval_probe_sys_handler(oval_subtype_t type, oval_pext_t *pext, int act, ...)
                         pd = oval_pdtbl_get(pext->pdtbl, type);
                 }
 
-                assume_r(pd != NULL, -1);
+               // assume_r(pd != NULL, -1);
 		ret = oval_probe_sys_eval(pext->pdtbl->ctx, pd, *(pext->model), inf);
                 break;
         }
         case PROBE_HANDLER_ACT_OPEN:
-        {
+        {/*
                 char         probe_uri[PATH_MAX + 1];
                 size_t       probe_urilen;
                 char        *probe_dir;
@@ -803,6 +811,7 @@ int oval_probe_sys_handler(oval_subtype_t type, oval_pext_t *pext, int act, ...)
                         }
                 }
                 break;
+                */
         }
         case PROBE_HANDLER_ACT_INIT:
                 ret = oval_probe_ext_init(pext);
