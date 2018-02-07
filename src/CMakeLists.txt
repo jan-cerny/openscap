@@ -67,6 +67,7 @@ if (ENABLE_PROBES)
 		$<TARGET_OBJECTS:seap_object>
 		$<TARGET_OBJECTS:probe_family>
 		$<TARGET_OBJECTS:probe_system_info>
+		$<TARGET_OBJECTS:probe_textfilecontent54>
 	)
 endif()
 

@@ -54,6 +54,7 @@
 #include <alloc.h>
 #include "common/assume.h"
 #include "common/debug_priv.h"
+#include "probe_table.h"
 
 #define FILE_SEPARATOR '/'
 
@@ -297,17 +298,7 @@ static int process_file(const char *path, const char *file, void *arg)
 	return ret;
 }
 
-void probe_offline_mode ()
-{
-	probe_setoption(PROBEOPT_OFFLINE_MODE_SUPPORTED, PROBE_OFFLINE_OWN);
-}
-
-void *probe_init(void)
-{
-  return NULL;
-}
-
-int probe_main(probe_ctx *ctx, void *arg)
+int textfilecontent54_probe_main(probe_ctx *ctx, void *arg)
 {
 	SEXP_t *path_ent, *file_ent, *inst_ent, *bh_ent, *patt_ent, *filepath_ent, *probe_in;
         SEXP_t *r0;
@@ -323,6 +314,8 @@ int probe_main(probe_ctx *ctx, void *arg)
 	unsigned int root_len = 0;
 
         (void)arg;
+
+    probe_setoption(PROBEOPT_OFFLINE_MODE_SUPPORTED, PROBE_OFFLINE_OWN);
 
 	memset(&pfd, 0, sizeof(pfd));
 

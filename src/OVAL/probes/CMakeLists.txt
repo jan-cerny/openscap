@@ -166,6 +166,8 @@ else()
 		add_oscap_internal_probe(probe_family "independent/family.c")
 
 		add_oscap_internal_probe(probe_system_info "independent/system_info.c")
+
+		add_oscap_internal_probe(probe_textfilecontent54 "independent/textfilecontent54.c")
 	endif()
 endif()
 

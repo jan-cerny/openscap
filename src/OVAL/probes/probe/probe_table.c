@@ -37,6 +37,7 @@ typedef struct probe_table_entry {
 static const probe_table_entry_t probe_table[] = {
     {OVAL_INDEPENDENT_FAMILY, family_probe_main},
     {OVAL_INDEPENDENT_SYSCHAR_SUBTYPE, system_info_probe_main},
+    {OVAL_INDEPENDENT_TEXT_FILE_CONTENT_54, textfilecontent54_probe_main},
     {OVAL_SUBTYPE_UNKNOWN, NULL}
 };
 

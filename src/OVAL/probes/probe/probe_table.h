@@ -37,6 +37,6 @@ probe_function_t probe_table_get(oval_subtype_t type);
 /* Probe function prototypes */
 int family_probe_main(probe_ctx *ctx, void *arg);
 int system_info_probe_main(probe_ctx *ctx, void *arg);
-
+int textfilecontent54_probe_main(probe_ctx *ctx, void *arg);
 
 #endif //OPENSCAP_PROBE_TABLE_H
