@@ -1,10 +1,18 @@
 add_subdirectory("SEAP")
 
+# Adds a probe as a separate executable
 function(add_oscap_probe PROBE_NAME PROBE_SOURCE_FILE)
 	add_executable(${PROBE_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/probe/main.c" ${PROBE_SOURCE_FILE} ${ARGN})
 	target_include_directories(${PROBE_NAME} PRIVATE "." "public")
 	target_link_libraries(${PROBE_NAME} openscap ${PCRE_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 	install(TARGETS ${PROBE_NAME} DESTINATION ${OVAL_PROBE_DIR})
+endfunction()
+
+# Adds a probe as libopenscap internal function
+function(add_oscap_internal_probe PROBE_NAME PROBE_SOURCE_FILE)
+	add_library(${PROBE_NAME} OBJECT ${PROBE_SOURCE_FILE} ${ARGN})
+	set_oscap_generic_properties(${PROBE_NAME})
+	target_include_directories(${PROBE_NAME} PRIVATE "." "public" "probe")
 endfunction()
 
 if(ENABLE_PROBES)
@@ -154,12 +162,10 @@ if(ENABLE_SEPARATE_PROBES)
 		endif()
 	endif()
 else()
-	add_library(family_probe_object OBJECT "independent/family.c")
-	set_oscap_generic_properties(family_probe_object)
-	target_include_directories(family_probe_object PRIVATE "." "public" "probe")
+	if(ENABLE_PROBES_INDEPENDENT)
+		add_oscap_internal_probe(probe_family "independent/family.c")
 
-	add_library(system_info_probe_object OBJECT "independent/system_info.c")
-	set_oscap_generic_properties(system_info_probe_object)
-	target_include_directories(system_info_probe_object PRIVATE "." "public" "probe")
+		add_oscap_internal_probe(probe_system_info "independent/system_info.c")
+	endif()
 endif()
 
