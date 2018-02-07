@@ -337,7 +337,9 @@ int oval_probe_query_sysinfo(oval_probe_session_t *sess, struct oval_sysinfo **o
 
         sysinf = NULL;
 
-    sysinf = oval_sysinfo_new(sess->sys_model);
+	ret = oval_probe_sys_handler(OVAL_SUBTYPE_SYSINFO, ph->uptr, PROBE_HANDLER_ACT_EVAL, NULL, &sysinf, 0);
+	if (ret != 0)
+		return(ret);
 
 	*out_sysinfo = sysinf;
 	return(0);
