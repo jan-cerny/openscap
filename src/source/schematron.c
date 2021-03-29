@@ -470,15 +470,12 @@ static bool _req_src_346_1_sub4(xmlNodePtr check_content_ref_node, xmlNodePtr ca
 static bool _req_src_346_1_sub3(xmlNodePtr rule_node, xmlNodePtr catalog, xmlXPathContextPtr context)
 {
 	bool res = true;
-	char *rule_id = (char *) xmlGetProp(rule_node, BAD_CAST "id");
 
-	/* note: $n is an xccdf:Rule */
 	/* xccdf:check[@system eq 'http://oval.mitre.org/XMLSchema/oval-definitions-5']//xccdf:check-content-ref[not(xcf:is-external-ref($m/cat:catalog, @href) cast as xsd:boolean)] */
-	xmlXPathObjectPtr check_content_refs = xmlXPathNodeEval(rule_node, BAD_CAST "xccdf:check[@system='http://oval.mitre.org/XMLSchema/oval-definitions-5']/xccdf:check-content-ref[@name]", context);
+	xmlXPathObjectPtr check_content_refs = xmlXPathNodeEval(rule_node, BAD_CAST ".//xccdf:Rule/xccdf:check[@system='http://oval.mitre.org/XMLSchema/oval-definitions-5']/xccdf:check-content-ref", context);
 
 	if (check_content_refs == NULL) {
-		dD("Rule '%s' has no suitable check-content-refs", rule_id);
-		free(rule_id);
+		dD("There are no check-content-refs elements to be checked.");
 		return true;
 	}
 
@@ -499,15 +496,13 @@ static bool _req_src_346_1_sub3(xmlNodePtr rule_node, xmlNodePtr catalog, xmlXPa
 	if (!found) {
 		res = false;
 	}
-	free(rule_id);
 	xmlXPathFreeObject(check_content_refs);
 	return res;
 }
 
 static bool _req_src_346_1_sub2(xmlNodePtr component_ref_node, xmlNodePtr catalog, xmlXPathContextPtr context)
 {
-	bool res = true;
-	/* every $n in xcf:get-component($m)//xccdf:Rule satisfies ... */
+	/* every $n in xcf:get-component($m)//xccdf:check satisfies ... */
 	xmlNodePtr component_node = _xcf_get_component(component_ref_node, context);
 	if (component_node == NULL) {
 		char *xlink_href = (char *) xmlGetNsProp(component_ref_node, BAD_CAST "href", BAD_CAST "http://www.w3.org/1999/xlink");
@@ -515,19 +510,10 @@ static bool _req_src_346_1_sub2(xmlNodePtr component_ref_node, xmlNodePtr catalo
 		free(xlink_href);
 		return false;
 	}
-	xmlXPathObjectPtr rules = xmlXPathNodeEval(component_node, BAD_CAST ".//xccdf:Rule", context);
-	for (int i = 0; i < rules->nodesetval->nodeNr; i++) {
-		xmlNodePtr rule_node = rules->nodesetval->nodeTab[i];
-		char *rule_id = (char *) xmlGetProp(rule_node, BAD_CAST "id");
-		dD("Checking xccdf:Rule id='%s'", rule_id);
-		free(rule_id);
-		if (!_req_src_346_1_sub3(rule_node, catalog, context)) {
-			res = false;
-			break;
-		}
+	if (!_req_src_346_1_sub3(component_node, catalog, context)) {
+		return false;
 	}
-	xmlXPathFreeObject(rules);
-	return res;
+	return true;
 }
 
 static bool _req_src_346_1_sub1(xmlNodePtr data_stream_node, xmlXPathContextPtr context)
