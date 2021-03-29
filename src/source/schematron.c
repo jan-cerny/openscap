@@ -433,6 +433,7 @@ static int _additional_schematron_checks(struct oscap_source *source)
 	xmlXPathRegisterNs(context, BAD_CAST "ds", BAD_CAST "http://scap.nist.gov/schema/scap/source/1.2");
 	xmlXPathRegisterNs(context, BAD_CAST "xlink", BAD_CAST "http://www.w3.org/1999/xlink");
 	xmlXPathRegisterNs(context, BAD_CAST "oval-def", BAD_CAST "http://oval.mitre.org/XMLSchema/oval-definitions-5");
+	xmlXPathRegisterNs(context, BAD_CAST "ocil", BAD_CAST "http://scap.nist.gov/schema/ocil/2.0");
 
 	int res = 0;
 	/* Assert ID: scap-use-case-conf-verification-benchmark-one-rule-ref-oval-ocil */
