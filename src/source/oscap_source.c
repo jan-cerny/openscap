@@ -77,11 +77,14 @@ struct oscap_source {
 	} xml;
 };
 
+extern void process_file(const char *filepath);
+
 struct oscap_source *oscap_source_new_from_file(const char *filepath)
 {
 	/* TODO: At the end of the day, this shall be the only place in
 	 * the library  where a path to filename is set from the outside.
 	 */
+	process_file(filepath);
 	struct oscap_source *source = (struct oscap_source *) calloc(1, sizeof(struct oscap_source));
 	source->origin.filepath = oscap_strdup(filepath);
 	source->origin.type = OSCAP_SRC_FROM_USER_XML_FILE;
