@@ -32,7 +32,8 @@
  * @param noescape Tells if backslash is treated as an escape character.
  * @return regular expression
  */
-char *oval_glob_to_regex(const char *glob, int noescape);
+extern char *oval_glob_to_regex(const char *glob, int noescape);
 
+extern void rust_free_cstr(char *);
 
 #endif

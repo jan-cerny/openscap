@@ -21,7 +21,6 @@ set (OVAL_SOURCES
     "oval_enumerations.c"
     "oval_filter.c"
     "oval_generator.c"
-    "oval_glob_to_regex.c"
     "oval_glob_to_regex.h"
     "oval_message.c"
     "oval_object.c"

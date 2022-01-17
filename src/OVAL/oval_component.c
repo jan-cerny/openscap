@@ -2181,11 +2181,13 @@ static oval_syschar_collection_flag_t _oval_component_evaluate_GLOB_TO_REGEX(ova
 		while (oval_value_iterator_has_more(values)) {
 			struct oval_value *value = oval_value_iterator_next(values);
 			char *text = oval_value_get_text(value);
-			char *string = oval_glob_to_regex(text, glob_noescape);
-			if (string == NULL) {
+			char *r_string = oval_glob_to_regex(text, glob_noescape);
+			if (r_string == NULL) {
 				flag = SYSCHAR_FLAG_ERROR;
 				break;
 			}
+			rust_free_cstr(r_string);
+			char *string = strdup(r_string);
 			value = oval_value_new(OVAL_DATATYPE_STRING, string);
 			free(string);
 			oval_collection_add(value_collection, value);
