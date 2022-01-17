@@ -5,6 +5,7 @@ add_subdirectory("CVSS")
 add_subdirectory("CVRF")
 add_subdirectory("DS")
 add_subdirectory("OVAL")
+add_subdirectory("rustoscap")
 if(ENABLE_SCE)
 	add_subdirectory("SCE")
 endif()
@@ -80,6 +81,10 @@ set_target_properties(openscap PROPERTIES
 	SOVERSION ${SOVERSION}
 	C_VISIBILITY_PRESET hidden
 )
+
+get_target_property(RUSTOSCAP_DIR rustoscap LOCATION)
+target_link_libraries(openscap ${RUSTOSCAP_DIR}/librustoscap.so)
+add_dependencies(openscap rustoscap)
 
 target_link_libraries(openscap ${LIBXML2_LIBRARIES} ${LIBXSLT_LIBRARIES} ${XMLSEC_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIBXSLT_EXSLT_LIBRARIES} ${PCRE_LIBRARIES} ${CURL_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 if (BZIP2_FOUND)
